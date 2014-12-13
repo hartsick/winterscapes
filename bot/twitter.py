@@ -1,11 +1,10 @@
 import os
-from twython import Twython
 
-class Tweeter(Twython):
-    def __init__(self, *args, **kwargs):
-        self.twitter = Twython(*credentials())
+class Tweeter(object):
+    def __init__(self, twitter_api):
+        self.twitter = twitter_api(*self.credentials())
 
-    def credentials():
+    def credentials(self):
       consumer_key = os.environ.get('CHRISTMASSCAPE_CONSUMER_KEY')
       consumer_secret = os.environ.get('CHRISTMASSCAPE_CONSUMER_SECRET')
       access_token = os.environ.get('CHRISTMASSCAPE_ACCESS_TOKEN')
@@ -17,3 +16,6 @@ class Tweeter(Twython):
                         access_token_secret)
 
       return credentials
+
+    def tweet(self, tweet):
+        self.twitter.update_status(status=tweet)

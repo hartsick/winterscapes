@@ -1,20 +1,23 @@
-TWEET_LENGTH = None
-NUM_COLUMNS = None
-NUM_ROWS = None
+# -*- coding: utf-8 -*-
 
 class TweetGenerator(object):
     def generate_tweet(self):
         pass
 
 class WinterscapeGenerator(TweetGenerator):
+    tweet_length = 140
     space = ' '
     snowman = '☃'
+    ground = '_'
     trees = ['†','∆','ᗗ','ᗑ','ᗋ','†','⋀','▲','△','◭','◮','◬','◢','◣','⧋']
     houses = ['⌂','☖','☗']
-    ground = '_'
     snowflakes = ['❄','❅', '❆', '⚹', '✵', '❉', '❋', '✺', '✹','✸','✳','✲','✱','⁂','☸','☀','✳','✱','✺']
     stars = ['⋄','✶','✷','✵','✴','✧','✦','⁕','༝','༚', '༶','•','‧','‸','⁂','☄','★','☆','✡','✯','✮','✰']
     people = ['☺','☻','☹','⚇','⚆','⚈','⚉']
     animals = ['♘','♞']
 
-    return tweet
+    def _set_size(self, rows=None,cols=None):
+        pass
+
+    def generate_tweet(self):
+        return self.animals
