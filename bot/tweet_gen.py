@@ -25,12 +25,13 @@ class TweetGenerator(object):
 
 class WinterscapeGenerator(TweetGenerator):
     ground_chars = {
-        'trees':    [2, ['∆','ᗗ','ᗑ','ᗋ','†','⋀','▲','△','◭','◮','◬','⧋']],
+        'trees':    [4, ['∆','ᗗ','ᗑ','ᗋ','†','⋀','▲','△','◭','◮','◬','⧋']],
         'houses':   [3, ['⌂','☖','☗']],
         'ground':   [0, ['_']],
         'snowman':  [12, ['☃']],
-        'people':   [2, ['☻','☹','⚇','⚆','⚈','⚉']],
-        'animals':  [15, ['♘','♞']]
+        'happy_people': [2, ['☻','⚇','⚆','⚈','⚉']],
+        'sad_people':   [1, ['☹']],
+        'animals':  [8, ['♘','♞']]
         }
     sky_chars = {
         'space':    [0, [' ']],
