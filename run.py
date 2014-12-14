@@ -16,11 +16,11 @@ def run_bot():
                 tweet = WinterscapeGenerator().generate_tweet()
                 twitter.tweet(tweet)
 
+                # tweet again in three hours
+                time.sleep(10800)
             except Exception as e:
                 logging.exception(e)
 
-            # tweet again in three hours
-            time.sleep(10800)
 
         else:
             # check again in an hour
