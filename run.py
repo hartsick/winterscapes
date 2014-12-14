@@ -1,24 +1,26 @@
 from twython import Twython
 from bot.twitter import Tweeter
 from bot.tweet_gen import WinterscapeGenerator
+from datetime import datetime
 
-twitter = Tweeter(Twython)
-tweet = WinterscapeGenerator().generate_tweet()
+def run_bot():
 
-twitter.tweet(tweet)
+    # Run tweets four-ish times daily during work hours
+    while True:
 
-# def run_stream():
-#     # Run tweets four times daily during work hours
-#     while True:
-#         try:
-#             stream = TweetStreamer(*twitter_credentials_init())
-#             stream.user(**{'with': 'user'})
-#         except Exception as e:
-#             logging.exception(e)
+        current_hour = datetime.now().hour
+        if current_hour => 7 and current_hour <= 19:
+            try:
+                twitter = Tweeter(Twython)
+                tweet = WinterscapeGenerator().generate_tweet()
+                twitter.tweet(tweet)
 
-#         time.sleep(60)
+            except Exception as e:
+                logging.exception(e)
 
-# 7am
-# 10am
-# 2pm
-# 5pm
+            # tweet again in three hours
+            time.sleep(10800)
+
+        else:
+            # check again in an hour
+            sleep(3600)
