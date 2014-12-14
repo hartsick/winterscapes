@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
-from random import choice, random
+from random import choice, random, randrange
 
 class TweetGenerator(object):
     TWEET_MAX_LENGTH = 140
@@ -12,10 +12,12 @@ class TweetGenerator(object):
         size = {}
         if height:
             width = int(math.floor(length / height))
-            length = int(width * height)
+            width_with_newline = width + 1
+            length = int(width_with_newline * height)
             size = {length: length, width: width, height: height}
         elif width:
-            height = int(math.floor(length / width))
+            width_with_newline = width + 1
+            height = int(math.floor(length / width_with_newline))
             length = int(width * height)
 
         size = {'length': length, 'width': width, 'height': height}
@@ -25,22 +27,22 @@ class TweetGenerator(object):
 
 class WinterscapeGenerator(TweetGenerator):
     ground_chars = {
-        'trees':    [4, ['∆','ᗗ','ᗑ','ᗋ','†','⋀','▲','△','◭','◮','◬','⧋']],
+        'dtrees':   [20,['▲']],
+        'trees':    [10, ['∆','ᗗ','ᗑ','⧋']],
         'houses':   [3, ['⌂','☖','☗']],
         'ground':   [0, ['_']],
-        'snowman':  [12, ['☃']],
-        'happy_people': [2, ['☻','⚇','⚆','⚈','⚉']],
+        'snowman':  [0, ['☃']],
         'sad_people':   [1, ['☹']],
-        'animals':  [8, ['♘','♞']]
+        'animals':  [2, ['♘','♞']]
         }
     sky_chars = {
-        'space':    [0, [' ']],
-        'snow':     [1, ['❅', '❆','❉','❋','✺','✹','✲','✱','☸','✺']],
-        'flecks':   [5, ['⋄','‧']],
-        'stars':    [2, ['✶','✷','✵','✴','✧','✦','⁕','༝','༚','•','‸','☄','☆','✮','✰','✸']]
+        'space':    [0, ['　']],
+        'snow':     [5, ['❅', '❆','❉','❋','✺','☸','✺']],
+        'flecks':   [30,['⋄','‧','༚']],
+        'stars':    [2, ['✧','✦','☄']]
     }
 
-    def create_sky_row(self, length):
+    def create_sky_row(self, length, row_num):
         row = []
         non_space_sky_chars = []
 
@@ -49,20 +51,28 @@ class WinterscapeGenerator(TweetGenerator):
             non_space_sky_chars  += (self.sky_chars[char_cat][0] * self.sky_chars[char_cat][1])
 
         for index in range(length):
-            # roll dice for blank
-            dice = random()
+            # stagger space placement for each row
+            if index % 2 == (row_num % 2):
+                # roll dice for blank
+                dice = random()
 
-            if dice < .92:
-                char = choice(self.sky_chars['space'][1])
-                row.append(char)
+                if dice < .4:
+                    char = choice(non_space_sky_chars)
+                    row.append(char)
+                else:
+                    char = choice(self.sky_chars['space'][1])
+                    row.append(char)
             else:
-                char = choice(non_space_sky_chars)
+                char = choice(self.sky_chars['space'][1])
                 row.append(char)
 
         return row
 
 
     def create_ground_row(self, length):
+        # hack for now - increase size of ground
+        length = length + 10
+
         row = []
         non_ground_ground_chars = []
 
@@ -71,16 +81,26 @@ class WinterscapeGenerator(TweetGenerator):
             non_ground_ground_chars += (self.ground_chars[char_cat][0] * self.ground_chars[char_cat][1])
 
         for index in range(length):
+            if index % 2 == 0:
 
-            # roll dice for blank
-            dice = random()
+                # roll dice for blank
+                dice = random()
 
-            if dice < .83:
+                if dice < .4:
+                    char = choice(non_ground_ground_chars)
+                    row.append(char)
+                else:
+                    char = choice(self.ground_chars['ground'][1])
+                    row.append(char)
+            else:
                 char = choice(self.ground_chars['ground'][1])
                 row.append(char)
-            else:
-                char = choice(non_ground_ground_chars)
-                row.append(char)
+
+        # randomly insert snowman at an even index
+        start = 0
+        end = length - 1
+        rand_index = randrange(start, end, 2)
+        row[rand_index] = choice(self.ground_chars['snowman'][1])
 
         return row
 
@@ -92,13 +112,13 @@ class WinterscapeGenerator(TweetGenerator):
 
 
     def generate_tweet(self):
-        dim = self.set_tweet_dimensions(width=25)
+        dim = self.set_tweet_dimensions(width=20)
         row_length = dim['width']
 
         scape = []
 
-        for sky_line in range(dim['height'] - 1):
-            row = self.create_sky_row(length=row_length)
+        for row_num in range(dim['height'] - 1):
+            row = self.create_sky_row(length=row_length, row_num=row_num)
             scape.append(row)
 
         scape.append(self.create_ground_row(length=row_length))
