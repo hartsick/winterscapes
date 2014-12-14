@@ -2,6 +2,7 @@ from twython import Twython
 from bot.twitter import Tweeter
 from bot.tweet_gen import WinterscapeGenerator
 from datetime import datetime
+import time
 
 def run_bot():
 
@@ -9,7 +10,7 @@ def run_bot():
     while True:
 
         current_hour = datetime.now().hour
-        if current_hour => 7 and current_hour <= 19:
+        if current_hour >= 7 and current_hour <= 19:
             try:
                 twitter = Tweeter(Twython)
                 tweet = WinterscapeGenerator().generate_tweet()
@@ -23,4 +24,9 @@ def run_bot():
 
         else:
             # check again in an hour
-            sleep(3600)
+            time.sleep(3600)
+
+
+if __name__ == "__main__":
+
+    run_bot()
