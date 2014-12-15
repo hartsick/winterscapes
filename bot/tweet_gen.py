@@ -133,7 +133,3 @@ class WinterscapeGenerator(TweetGenerator):
 
         print tweet_text
         return tweet_text
-
-
-tweet = WinterscapeGenerator()
-tweet.generate_tweet()
