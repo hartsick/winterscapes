@@ -4,6 +4,7 @@ from random import choice, random, randrange
 
 class TweetGenerator(object):
     TWEET_MAX_LENGTH = 140
+    MAX_HEIGHT = 10
 
     def generate_tweet(self):
         pass
@@ -19,6 +20,10 @@ class TweetGenerator(object):
             width_with_newline = width + 1
             height = int(math.floor(length / width_with_newline))
             length = int(width * height)
+
+        # cap height at 10
+        if height > self.MAX_HEIGHT:
+            height = self.MAX_HEIGHT
 
         size = {'length': length, 'width': width, 'height': height}
 
@@ -38,8 +43,8 @@ class WinterscapeGenerator(TweetGenerator):
         }
     sky_chars = {
         'space':    [0, ['　']],
-        'snow':     [5, ['❅', '❆','❉','❋','✺','☸','✺','✫']],
-        'flecks':   [30,['⋄','‧','༚','⊹','.','*']],
+        'snow':     [8, ['❅', '❆','❉','❋','✺','☸','✺','✫']],
+        'flecks':   [28,['⋄','‧','༚','⊹','.','*']],
         'stars':    [2, ['✧','✦','☄']]
     }
 
@@ -72,7 +77,7 @@ class WinterscapeGenerator(TweetGenerator):
 
     def create_ground_row(self, length):
         # hack for now - increase size of ground
-        length = length + 10
+        length = length + 8
 
         row = []
         non_ground_ground_chars = []
@@ -113,7 +118,7 @@ class WinterscapeGenerator(TweetGenerator):
 
 
     def generate_tweet(self):
-        dim = self.set_tweet_dimensions(width=20)
+        dim = self.set_tweet_dimensions(width=12)
         row_length = dim['width']
 
         scape = []
@@ -128,3 +133,7 @@ class WinterscapeGenerator(TweetGenerator):
 
         print tweet_text
         return tweet_text
+
+
+tweet = WinterscapeGenerator()
+tweet.generate_tweet()
